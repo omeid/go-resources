@@ -8,8 +8,6 @@ import (
 	"os"
 )
 
-var FilenameFormat = "%s_resource.go"
-
 type File interface {
 	io.Reader
 	Stat() (os.FileInfo, error)

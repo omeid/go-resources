@@ -60,7 +60,9 @@ import (
   "time"
   "bytes"
   "os"
+  "path/filepath"
   "strings"
+  "errors"
 )
 
 
@@ -79,6 +81,10 @@ type FileSystem struct {
 }
 
 func (fs *FileSystem) Open(name string) (http.File, error) {
+	if filepath.Separator != '/' && strings.IndexRune(name, filepath.Separator) >= 0 ||
+	    strings.Contains(name, "\x00") {
+		return nil, errors.New("http: invalid character in file path")
+	}
 	file, ok := fs.files[name]
 	if !ok {
 		files := []os.FileInfo{}
