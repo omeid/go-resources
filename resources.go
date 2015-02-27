@@ -1,4 +1,4 @@
-// Go resources/assets embeding with no dependency.
+// Unfancy resources embedding with Go.
 
 package resources
 

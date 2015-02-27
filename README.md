@@ -1,5 +1,5 @@
 # Resources
 
-Embeding resources the fancy way.
+Unfancy resources embedding with Go.
 
 > Work in progress...

@@ -1,3 +1,5 @@
+// Unfancy resources embedding with Go.
+
 package main
 
 import (
