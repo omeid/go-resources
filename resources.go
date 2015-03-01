@@ -32,7 +32,7 @@ type Config struct {
 	Pkg     string  // Package name
 	Var     string  // Variable name to assign the file system to.
 	Tag     string  // Build tag, leave empty for no tag.
-	Declare bool    // Dictates whatever there should be a defintion for the variable in the output file or not, it will use the type http.FileSystem.
+	Declare bool    // Dictates whatever there should be a defintion Variable 
   }
 
 type Package struct {
