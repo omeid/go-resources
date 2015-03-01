@@ -28,17 +28,12 @@ func New() *Package {
 }
 
 //Configuration defines some details about the output Go file.
-// Pkg      the package name to use.
-// Var      the variable name to assign the file system to.
-// Tag      the build tag for the generated file, leave empty for not tag.
-// Declare  dictates whatever there should be a defintion for the variable
-//          in the output file or not, it will use the type http.FileSystem.
 type Config struct {
-	Pkg     string
-	Var     string
-	Tag     string
-	Declare bool
-}
+	Pkg     string  // Pkg      the package name to use.
+	Var     string  // Var      the variable name to assign the file system to.
+	Tag     string  // Tag      the build tag for the generated file, leave empty for not tag.
+	Declare bool    // Declare  dictates whatever there should be a defintion for the variable in the output file or not, it will use the type http.FileSystem.
+  }
 
 type Package struct {
 	Config
