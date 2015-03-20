@@ -57,9 +57,8 @@ func (p *Package) AddFile(file string, path string) error {
 }
 
 //Build the package
-func (p *Package) Build() (*bytes.Buffer, error) {
-	out := new(bytes.Buffer)
-	return out, pkg.Execute(out, p)
+func (p *Package) Build(out io.Writer) (error) {
+	return pkg.Execute(out, p)
 }
 
 //Write the build to a file.
@@ -70,14 +69,7 @@ func (p *Package) Write(path string) error {
 	}
 	defer f.Close()
 
-	buff, err := p.Build()
-
-	if err != nil {
-		return err
-	}
-
-	_, err = buff.WriteTo(f)
-	return err
+	return p.Build(f)
 }
 
 //Template
