@@ -14,7 +14,7 @@ var (
 	Pkg     = flag.String("package", "main", "The name of package to generate.")
 	Var     = flag.String("var", "FS", "The name of variable to assign the virtual-filesystem to.")
 	Tag     = flag.String("tag", "", "The tag to use for the generated package. Use empty for no tag.")
-	Declare = flag.Bool("declare", false, "Whatever to declare the \"var\" or not.")
+	Declare = flag.Bool("declare", false, "Whether to declare the \"var\" or not.")
 	Out     = flag.String("output", "", "The filename to write the output to.")
 )
 

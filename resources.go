@@ -102,7 +102,7 @@ func reader(input io.Reader) (string, error) {
 			if curblock < blockwidth {
 				continue
 			}
-			buff.Write([]byte{'\n'})
+			buff.WriteByte('\n')
 			buff.Write([]byte{'\t', '\t'})
 			curblock = 0
 		}
