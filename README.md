@@ -23,7 +23,7 @@ $ go get github.com/omeid/go-resources/cmd/resources
 ```sh
 $ resources -help
 Usage of resources:
-  -declare=false: Whatever to declare the "var" or not.
+  -declare=false: Whether to declare the "var" or not.
   -output="": The filename to write the output to.
   -package="main": The name of package to generate.
   -tag="": The tag to use for the generated package. Use empty [default] for no tag.
