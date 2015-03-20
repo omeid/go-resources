@@ -78,3 +78,4 @@ See [Contributors](https://github.com/omeid/go-resources/graphs/contributors).
 ### TODO
 
  - Add tests. 
+ - Remove "net/http" dependency.
