@@ -29,11 +29,11 @@ func New() *Package {
 
 //Configuration defines some details about the output Go file.
 type Config struct {
-	Pkg     string  // Package name
-	Var     string  // Variable name to assign the file system to.
-	Tag     string  // Build tag, leave empty for no tag.
-	Declare bool    // Dictates whatever there should be a defintion Variable 
-  }
+	Pkg     string // Package name
+	Var     string // Variable name to assign the file system to.
+	Tag     string // Build tag, leave empty for no tag.
+	Declare bool   // Dictates whatever there should be a defintion Variable
+}
 
 type Package struct {
 	Config
@@ -57,7 +57,7 @@ func (p *Package) AddFile(file string, path string) error {
 }
 
 //Build the package
-func (p *Package) Build(out io.Writer) (error) {
+func (p *Package) Build(out io.Writer) error {
 	return pkg.Execute(out, p)
 }
 
