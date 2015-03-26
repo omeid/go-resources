@@ -60,7 +60,7 @@ func (p *Package) Build(out io.Writer) error {
 	return pkg.Execute(out, p)
 }
 
-//Write the build to a file.
+//Write the build to a file, you don't need to call Build.
 func (p *Package) Write(path string) error {
 	f, err := os.Create(path)
 	if err != nil {
