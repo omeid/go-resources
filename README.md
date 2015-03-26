@@ -8,7 +8,7 @@ Unfancy resources embedding with Go.
 
 ### Dude, Why?
 
-Yes, there is quite a lot of projects that handles resource embeding but they come with more bling than you will probably ever need and you often ended up with having dependenies for your end project, not this time.
+Yes, there is quite a lot of projects that handles resource embedding but they come with more bling than you ever need and you often end up with having dependencies for your end project, not this time.
 
 ### Installing
 
@@ -32,7 +32,7 @@ Usage of resources:
 ```
 
 ### Optimization
-Generating resources result in a very high number of lines of code, 1mb of resources result about 5mb of code at over 87 thousand lines of code, _don't worry, the size of data stored in your binary is exactly same as the resources (eg. 1mb of resources only increases your binary size by 1mb)_, compiling this many lines of code takes time and slows down the compiler.
+Generating resources result in a very high number of lines of code, 1mb of resources result about 5mb of code at over 87 thousand lines of code, _don't worry, the size of data stored in your binary is exactly same as the resources (eg. 1mb of resources only increases your binary size by 1mb)_, compiling this many lines of code takes time and slows down the compiler.  
 To avoid recompiling the resources every time and leverage the `go build` cache, generate your resources into a standalone package and then import it, this will allow for faster iteration as you don't have to wait for the resources to be compiled with every change.
 
 ##### "Live" development of resources 
@@ -72,7 +72,7 @@ $ go build -tags=embed
 ```
 
 Now your resources should be embedded with your program!  
-And of course, you may use any `var` name or tag you please.
+Of course, you may use any `var` name or tag you please.
 
 ### Go Generate
 There is a few reasons to avoid resource embedding in Go generate,
@@ -89,7 +89,7 @@ type File interface {
       Stat() (os.FileInfo, error)
 }
 ```
-along with a helper method that adds files from filesystem with ease, this allows to integrate go-resources with ease in your workflow when the when the provided command doesn't fit well, for an example see the [slurp binding](https://github.com/slurp-contrib/resources/blob/master/resources.go) of go-resources.  
+along with a helper method that adds files from filesystem, this allows to integrate go-resources with ease in your workflow when the when the provided command doesn't fit well, for an example see the [slurp binding](https://github.com/slurp-contrib/resources/blob/master/resources.go) of go-resources.  
 Please refer to the [GoDoc](https://godoc.org/github.com/omeid/go-resources) for complete documentation.
 
 
