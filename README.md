@@ -36,7 +36,7 @@ Generating resources result in a very high number of lines of code, 1mb of resou
 To avoid recompiling the resources every time and leverage the `go build` cache, generate your resources into a standalone package and then import it, this will allow for faster iteration as you don't have to wait for the resources to be compiled with every change.
 
 ##### "Live" development of resources 
-For fast iteration and improvement of your resources, you can work around the compile with the follow technique: 
+For fast iteration and improvement of your resources, you can work around the compile with the following technique: 
 
 ```go
 package main
@@ -44,9 +44,12 @@ package main
 import "net/http"
 var Assets http.FileSystem 
 
-
 func main() {
-//Use Assets here
+  if Assets == nil {
+    panic("No Assets. Have you generated the resources?")
+  }
+
+  //Use Assets here
 }
 ```
 
