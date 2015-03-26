@@ -94,6 +94,8 @@ Please refer to the [GoDoc](https://godoc.org/github.com/omeid/go-resources) for
 
 
 
+===
+
 ### Contributing
 Please consider opening an issue first, or just send a pull request. :)
 
