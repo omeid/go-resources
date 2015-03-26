@@ -4,7 +4,7 @@ Unfancy resources embedding with Go.
 
 - No blings.
 - No runtime dependency.
-- Embeddable builder.
+- Idiomatic Library First design.
 
 ### Dude, Why?
 
@@ -71,15 +71,28 @@ $ resources -output="public_resources.go" -var="Assets" -tag="embed" public/*
 $ go build -tags=embed
 ```
 
-Now your resources should be embeded with your program!  
+Now your resources should be embedded with your program!  
 And of course, you may use any `var` name or tag you please.
 
 ### Go Generate
-There is a few reasons to avoid resource embeding in Go generate,
+There is a few reasons to avoid resource embedding in Go generate,
 first Go Generate is for generating Go source code from your code, generally the resources you want to embed aren't effected by the Go source directly and as such generating resources are out of the scope of Go Generate.
 Second, You're unnecessarily slowing down code iterations by blocking `go generate` for resource generation.
 
 But if you must use, put the `//go:generate resources` followed by the usual flags on the command-line somewhere in your Go files.
+
+# Resources, The Library [![GoDoc](https://godoc.org/github.com/omeid/go-resources?status.svg)](https://godoc.org/github.com/omeid/go-resources)
+The resource generator is written as a library and isn't bound to filesystem by the way of accepting files in the form 
+```go
+type File interface {
+      io.Reader
+      Stat() (os.FileInfo, error)
+}
+```
+along with a helper method that adds files from filesystem with ease, this allows to integrate go-resources with ease in your workflow when the when the provided command doesn't fit well, for an example see the [slurp binding](https://github.com/slurp-contrib/resources/blob/master/resources.go) of go-resources.  
+Please refer to the [GoDoc](https://godoc.org/github.com/omeid/go-resources) for complete documentation.
+
+
 
 ### Contributing
 Please consider opening an issue first, or just send a pull request. :)
