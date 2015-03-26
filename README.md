@@ -31,7 +31,12 @@ Usage of resources:
   -var="FS": The name of variable to assign the virtual-filesystem to.
 ```
 
-#### Techniques for "live" resources for development
+### Optimization
+Generating resources result in a very high number of lines of code, 1mb of resources result about 5mb of code at over 87 thousand lines of code, _don't worry, the size of data stored in your binary is exactly same as the resources (eg. 1mb of resources only increases your binary size by 1mb_, compiling this many lines of code takes time and slows down the compiler.
+To avoid recompiling the resources every time and leverage the `go build` cache, generate your resources into a standalone package and then import it, this will allow for faster iteration as you don't have to wait for the resources to be compiled with every change.
+
+##### "Live" development of resources 
+For fast iteration and improvement of your resources, you can work around the compile with the follow technique: 
 
 ```go
 package main
@@ -54,9 +59,9 @@ import "net/http"
 
 var Assets = http.Dir("./public")
 ```
-Now when you build or run your project, you will have files directly served from `./public` directory. This is pretty helpful for development.
+Now when you build or run your project, you will have files directly served from `./public` directory.
 
-To embed your resources, do
+And then to embed your resources, do
 
 ```sh
 $ resources -output="public_resources.go" -var="Assets" -tag="embed" public/*
@@ -64,12 +69,7 @@ $ go build -tags=embed
 ```
 
 Now your resources should be embeded with your program!
-
-
-
-### Optimization
-Generating resources result in a very high number of lines of code, 1mb of resources result about 5mb of code at over 87 thousand lines of code, _don't worry, the size of data stored in your binary is exactly same as the resources (eg. 1mb of resources only increases your binary size by 1mb_, compiling this many lines of code takes time and slows down the compiler.
-To avoid recompiling the resources everyi time and leverage the `go build` cache, generate your resources into a standalone package and then import it, this will allow for faster iteration as you don't have to wait for the resources to be compiled with every change.
+And of course, you may use any `var` name or tag you please.
 
 ### Go Generate
 There is a few reasons to avoid resource embeding in Go generate,
