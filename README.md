@@ -32,7 +32,7 @@ Usage of resources:
 ```
 
 ### Optimization
-Generating resources result in a very high number of lines of code, 1mb of resources result about 5mb of code at over 87 thousand lines of code, _don't worry, the size of data stored in your binary is exactly same as the resources (eg. 1mb of resources only increases your binary size by 1mb_, compiling this many lines of code takes time and slows down the compiler.
+Generating resources result in a very high number of lines of code, 1mb of resources result about 5mb of code at over 87 thousand lines of code, _don't worry, the size of data stored in your binary is exactly same as the resources (eg. 1mb of resources only increases your binary size by 1mb)_, compiling this many lines of code takes time and slows down the compiler.
 To avoid recompiling the resources every time and leverage the `go build` cache, generate your resources into a standalone package and then import it, this will allow for faster iteration as you don't have to wait for the resources to be compiled with every change.
 
 ##### "Live" development of resources 
