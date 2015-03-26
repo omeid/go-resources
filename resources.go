@@ -45,14 +45,13 @@ func (p *Package) Add(path string, file File) {
 	p.Files[path] = file
 }
 
-func (p *Package) AddFile(file string, path string) error {
+//Add a file to the package at the give path, the files is the location of a file on the filesystem.
+func (p *Package) AddFile(path string, file string) error {
 	f, err := os.Open(file)
 	if err != nil {
 		return err
 	}
-
 	p.Files[path] = f
-
 	return nil
 }
 

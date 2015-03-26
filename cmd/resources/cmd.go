@@ -50,7 +50,7 @@ func main() {
 
 	for file, _ := range files {
 		path := strings.TrimPrefix(file, *TrimPath)
-		err := res.AddFile(file, path)
+		err := res.AddFile(path, file)
 		if err != nil {
 			log.Fatal(err)
 		}
