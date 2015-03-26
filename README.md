@@ -68,7 +68,7 @@ $ resources -output="public_resources.go" -var="Assets" -tag="embed" public/*
 $ go build -tags=embed
 ```
 
-Now your resources should be embeded with your program!
+Now your resources should be embeded with your program!  
 And of course, you may use any `var` name or tag you please.
 
 ### Go Generate
