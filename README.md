@@ -26,7 +26,7 @@ Usage of resources:
   -declare=false: Whether to declare the "var" or not.
   -output="": The filename to write the output to.
   -package="main": The name of package to generate.
-  -tag="": The tag to use for the generated package. Use empty for no tag.
+  -tag="": The tag to use for the generated package. Defaults to not tag.
   -trim="": Path prefix to remove from the resulting file path
   -var="FS": The name of variable to assign the virtual-filesystem to.
 ```
