@@ -31,7 +31,12 @@ func main() {
 		log.Fatal("-output is required.")
 	}
 
-	config := resources.Config{*Pkg, *Var, *Tag, *Declare}
+	config := resources.Config{
+		Pkg:     *Pkg,
+		Var:     *Var,
+		Tag:     *Tag,
+		Declare: *Declare,
+	}
 
 	res := resources.New()
 	res.Config = config

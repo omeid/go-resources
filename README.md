@@ -89,7 +89,7 @@ type File interface {
       Stat() (os.FileInfo, error)
 }
 ```
-along with a helper method that adds files from filesystem, this allows to integrate go-resources with ease in your workflow when the when the provided command doesn't fit well, for an example see the [slurp binding](https://github.com/slurp-contrib/resources/blob/master/resources.go) of go-resources.  
+along with a helper method that adds files from filesystem, this allows to integrate go-resources with ease in your workflow when the when the provided command doesn't fit well, for an example see the [Gonzo binding](https://github.com/go-gonzo/resources/blob/master/resources.go) of go-resources.  
 Please refer to the [GoDoc](https://godoc.org/github.com/omeid/go-resources) for complete documentation.
 
 
