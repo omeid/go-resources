@@ -161,7 +161,7 @@ func (fs *FileSystem) Open(name string) (http.File, error) {
 			}
 		}
 
-		if len(files) < 0 {
+		if len(files) == 0 {
 			return nil, os.ErrNotExist
 		}
 
