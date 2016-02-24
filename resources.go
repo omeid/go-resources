@@ -151,8 +151,8 @@ func (fs *FileSystem) Open(name string) (http.File, error) {
 		files := []os.FileInfo{}
 		for path, file := range fs.files {
 			if strings.HasPrefix(path, name) {
-				s, _ := file.Stat()
-				files = append(files, s)
+				fi := file.fi
+				files = append(files, &fi)
 			}
 		}
 
