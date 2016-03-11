@@ -3,6 +3,7 @@
 package resources
 
 import (
+	"bytes"
 	"io"
 	"os"
 )
@@ -20,7 +21,7 @@ func New() *Package {
 			Var:     "FS",
 			Declare: true,
 		},
-		Files: make(map[string]File),
+		Files: make(map[string]string),
 	}
 }
 
@@ -34,12 +35,14 @@ type Config struct {
 
 type Package struct {
 	Config
-	Files map[string]File
+	Files map[string]string
 }
 
 //Add a file to the package at the give path.
-func (p *Package) Add(path string, file File) {
-	p.Files[path] = file
+func (p *Package) Add(path string, f File) {
+	buf := &bytes.Buffer{}
+	file.Execute(buf, f)
+	p.Files[path] = buf.String()
 }
 
 //Add a file to the package at the give path, the files is the location of a file on the filesystem.
@@ -48,7 +51,8 @@ func (p *Package) AddFile(path string, file string) error {
 	if err != nil {
 		return err
 	}
-	p.Files[path] = f
+	p.Add(path, f)
+	f.Close()
 	return nil
 }
 
