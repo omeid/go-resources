@@ -6,12 +6,8 @@ import (
 	"bytes"
 	"io"
 	"os"
+	"path/filepath"
 )
-
-type File interface {
-	io.Reader
-	Stat() (os.FileInfo, error)
-}
 
 //Create a new Package.
 func New() *Package {
@@ -21,7 +17,7 @@ func New() *Package {
 			Var:     "FS",
 			Declare: true,
 		},
-		Files: make(map[string]string),
+		Files: make(map[string]*Entry),
 	}
 }
 
@@ -33,32 +29,63 @@ type Config struct {
 	Declare bool   // Dictates whatever there should be a defintion Variable
 }
 
-type Package struct {
-	Config
-	Files map[string]string
+type Entry struct {
+	RenderedFileInfo string
+	RenderedData     string
+	FileInfos        []string
 }
 
-//Add a file to the package at the give path.
-func (p *Package) Add(path string, f File) {
+func NewEntry(f *os.File) *Entry {
+	entry := &Entry{}
+
 	buf := &bytes.Buffer{}
-	file.Execute(buf, f)
-	p.Files[path] = buf.String()
+	fileInfoTpl.Execute(buf, f)
+	entry.RenderedFileInfo = buf.String()
+	buf.Reset()
+	fileDataTpl.Execute(buf, f)
+	entry.RenderedData = buf.String()
+
+	return entry
+}
+
+type Package struct {
+	Config
+	Files map[string]*Entry
 }
 
 //Add a file to the package at the give path, the files is the location of a file on the filesystem.
-func (p *Package) AddFile(path string, file string) error {
-	f, err := os.Open(file)
+func (p *Package) AddFile(pathKey string, path string) error {
+	f, err := os.Open(path)
 	if err != nil {
 		return err
 	}
-	p.Add(path, f)
+
+	e := NewEntry(f)
+	p.Files[pathKey] = e
 	f.Close()
+
+	dirKey := filepath.Dir(pathKey)
+	dir := filepath.Dir(path)
+
+	if dirKey == "/" {
+		dirKey = "."
+	}
+
+	// if dir and path are equal, we're already the root
+	if dirKey == pathKey {
+		return nil
+	}
+	if _, exists := p.Files[dirKey]; !exists {
+		p.AddFile(dirKey, dir)
+	}
+	p.Files[dirKey].FileInfos = append(p.Files[dirKey].FileInfos, e.RenderedFileInfo)
+
 	return nil
 }
 
 //Build the package
 func (p *Package) Build(out io.Writer) error {
-	return pkg.Execute(out, p)
+	return pkgTpl.Execute(out, p)
 }
 
 //Write the build to a file, you don't need to call Build.
