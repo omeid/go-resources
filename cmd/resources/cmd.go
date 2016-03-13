@@ -20,8 +20,6 @@ var (
 	TrimPath = flag.String("trim", "", "Path prefix to remove from the resulting file path")
 )
 
-type nope struct{}
-
 func main() {
 
 	flag.Parse()
@@ -41,7 +39,7 @@ func main() {
 	res := resources.New()
 	res.Config = config
 
-	files := make(map[string]nope)
+	files := make(map[string]struct{})
 
 	for _, g := range flag.Args() {
 		matches, err := filepath.Glob(g)
@@ -49,7 +47,7 @@ func main() {
 			log.Fatal(err)
 		}
 		for _, m := range matches {
-			files[m] = nope{}
+			files[m] = struct{}{}
 		}
 	}
 
