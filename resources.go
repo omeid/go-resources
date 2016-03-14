@@ -41,8 +41,9 @@ type Package struct {
 }
 
 //Add a file to the package at the give path.
-func (p *Package) Add(path string, file File) {
+func (p *Package) Add(path string, file File) error {
 	p.Files[path] = file
+	return nil
 }
 
 //Add a file to the package at the give path, the files is the location of a file on the filesystem.
@@ -51,8 +52,7 @@ func (p *Package) AddFile(path string, file string) error {
 	if err != nil {
 		return err
 	}
-	p.Files[path] = f
-	return nil
+	return p.Add(path, f);
 }
 
 //Build the package
