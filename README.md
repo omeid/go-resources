@@ -58,9 +58,17 @@ func main() {
 
 package main
 
-import "net/http"
+import (
+	"net/http"
 
-var Assets = http.Dir("./public")
+	here "github.com/omeid/go-here"
+  // Here is used to find the absolute path relative to the source code
+  // this allows you to use this trick in non-main packages and call
+  // go run/test et al from any location.
+)
+
+
+var Assets = http.Dir(here.Abs("./public"))
 ```
 Now when you build or run your project, you will have files directly served from `./public` directory.
 
