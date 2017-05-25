@@ -12,12 +12,12 @@ import (
 )
 
 var (
-	Pkg      = flag.String("package", "main", "The name of package to generate.")
-	Var      = flag.String("var", "FS", "The name of variable to assign the virtual-filesystem to.")
-	Tag      = flag.String("tag", "", "The tag to use for the generated package. Defaults to not tag.")
-	Declare  = flag.Bool("declare", false, "Whether to declare the \"var\" or not.")
-	Out      = flag.String("output", "", "The filename to write the output to.")
-	TrimPath = flag.String("trim", "", "Path prefix to remove from the resulting file path")
+	pkg      = flag.String("package", "main", "The name of package to generate.")
+	varName  = flag.String("var", "FS", "The name of variable to assign the virtual-filesystem to.")
+	tag      = flag.String("tag", "", "The tag to use for the generated package. Defaults to not tag.")
+	declare  = flag.Bool("declare", false, "Whether to declare the \"var\" or not.")
+	out      = flag.String("output", "", "The filename to write the output to.")
+	trimPath = flag.String("trim", "", "Path prefix to remove from the resulting file path")
 )
 
 type nope struct{}
@@ -26,16 +26,16 @@ func main() {
 
 	flag.Parse()
 
-	if *Out == "" {
+	if *out == "" {
 		flag.PrintDefaults()
 		log.Fatal("-output is required.")
 	}
 
 	config := resources.Config{
-		Pkg:     *Pkg,
-		Var:     *Var,
-		Tag:     *Tag,
-		Declare: *Declare,
+		Pkg:     *pkg,
+		Var:     *varName,
+		Tag:     *tag,
+		Declare: *declare,
 	}
 
 	res := resources.New()
@@ -53,20 +53,20 @@ func main() {
 		}
 	}
 
-	for file, _ := range files {
-		path := strings.TrimPrefix(file, *TrimPath)
+	for file := range files {
+		path := strings.TrimPrefix(file, *trimPath)
 		err := res.AddFile(path, file)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
 
-	err := res.Write(*Out)
+	err := res.Write(*out)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Printf("Done. Wrote to %s", *Out)
+	log.Printf("Done. Wrote to %s", *out)
 
 }

@@ -1,5 +1,4 @@
-// Unfancy resources embedding with Go.
-
+// Package resources provides unfancy resources embedding with Go.
 package resources
 
 import (
@@ -93,9 +92,13 @@ func reader(input io.Reader) (string, error) {
 
 	b := make([]byte, blockwidth)
 
-	for n, err := input.Read(b); err == nil; n, err = input.Read(b) {
+	var n int
+	for n, err = input.Read(b); err == nil; n, err = input.Read(b) {
 		for i := 0; i < n; i++ {
-			fmt.Fprintf(&buff, "0x%02x,", b[i])
+			_, err = fmt.Fprintf(&buff, "0x%02x,", b[i])
+			if err != nil {
+				break
+			}
 			curblock++
 			if curblock < blockwidth {
 				continue
