@@ -60,14 +60,11 @@ package main
 import (
 	"net/http"
 
-	here "github.com/omeid/go-here"
-  // Here is used to find the absolute path relative to the source code
-  // this allows you to use this trick in non-main packages and call
-  // go run/test et al from any location.
+	live "github.com/omeid/go-resources/live"
 )
 
 
-var Assets = http.Dir(here.Abs("./public"))
+var Assets = live.Dir("./public")
 ```
 Now when you build or run your project, you will have files directly served from `./public` directory.
 
@@ -111,7 +108,7 @@ type Resources interface {
 	String(string) (string, bool)
 }
 
-var Assets Resources = http.Dir(here.Abs("./public"))
+var Assets Resources
 ```
 
 Now you can call `Assets.String(someFile)` and get the content as string with a boolean value indicating whatever the file was found or not.
