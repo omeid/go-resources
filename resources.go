@@ -146,6 +146,22 @@ type FileSystem struct {
 	files map[string]File
 }
 
+// String returns the content of the file as string.
+func (fs *FileSystem) String(name string) (string, bool) {
+	if filepath.Separator != '/' && strings.IndexRune(name, filepath.Separator) >= 0 ||
+		strings.Contains(name, "\x00") {
+		return nil, errors.New("http: invalid character in file path")
+	}
+
+	file, ok := fs.files[name]
+
+	if !ok {
+		return "", false
+	}
+
+	return string(file.data), true
+}
+
 // Open implements http.FileSystem.Open
 func (fs *FileSystem) Open(name string) (http.File, error) {
 	if filepath.Separator != '/' && strings.IndexRune(name, filepath.Separator) >= 0 ||

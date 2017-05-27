@@ -100,6 +100,22 @@ along with a helper method that adds files from filesystem, this allows to integ
 Please refer to the [GoDoc](https://godoc.org/github.com/omeid/go-resources) for complete documentation.
 
 
+### Strings
+
+The generated FileSystem also implements an `String(string) (string, bool)` method that allows you to read the content of a file as string, to use that
+instead of defining your file Assets variable as simply an http.FileSystem, do the following:
+```go
+
+type Resources interface {
+	http.FileSystem
+	String(string) (string, bool)
+}
+
+var Assets Resources = http.Dir(here.Abs("./public"))
+```
+
+Now you can call `Assets.String(someFile)` and get the content as string with a boolean value indicating whatever the file was found or not.
+
 
 ===
 
