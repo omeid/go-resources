@@ -92,8 +92,7 @@ func reader(input io.Reader) (string, error) {
 
 	b := make([]byte, blockwidth)
 
-	var n int
-	for n, err = input.Read(b); err == nil; n, err = input.Read(b) {
+	for n, err := input.Read(b); err == nil; n, err = input.Read(b) {
 		for i := 0; i < n; i++ {
 			_, err = fmt.Fprintf(&buff, "0x%02x,", b[i])
 			if err != nil {
@@ -150,7 +149,7 @@ type FileSystem struct {
 func (fs *FileSystem) String(name string) (string, bool) {
 	if filepath.Separator != '/' && strings.IndexRune(name, filepath.Separator) >= 0 ||
 		strings.Contains(name, "\x00") {
-		return nil, errors.New("http: invalid character in file path")
+		return "", false
 	}
 
 	file, ok := fs.files[name]
