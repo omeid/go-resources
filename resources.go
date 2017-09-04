@@ -93,10 +93,11 @@ func reader(input io.Reader, indent int) (string, error) {
 
 	b := make([]byte, blockwidth)
 
-	for n, err := input.Read(b); err == nil; n, err = input.Read(b) {
+	for n, e := input.Read(b); e == nil; n, e = input.Read(b) {
 		for i := 0; i < n; i++ {
-			_, err = fmt.Fprintf(&buff, "0x%02x,", b[i])
-			if err != nil {
+			_, e = fmt.Fprintf(&buff, "0x%02x,", b[i])
+			if e != nil {
+				err = e
 				break
 			}
 			curblock++
