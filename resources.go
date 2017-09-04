@@ -79,9 +79,13 @@ func (p *Package) Write(path string) error {
 	return p.Build(f)
 }
 
-// Template
-var pkg *template.Template
+var (
+	// Template
+	pkg *template.Template
 
+	// BlockWidth allows to adjust the number of bytes per line in the generated file
+	BlockWidth = 12
+)
 
 func reader(input io.Reader, indent int) (string, error) {
 	var (
@@ -91,7 +95,7 @@ func reader(input io.Reader, indent int) (string, error) {
 		linebreak = "\n" + strings.Repeat("\t", indent)
 	)
 
-	b := make([]byte, blockwidth)
+	b := make([]byte, BlockWidth)
 
 	for n, e := input.Read(b); e == nil; n, e = input.Read(b) {
 		for i := 0; i < n; i++ {
@@ -101,7 +105,7 @@ func reader(input io.Reader, indent int) (string, error) {
 				break
 			}
 			curblock++
-			if curblock < blockwidth {
+			if curblock < BlockWidth {
 				buff.WriteRune(' ')
 				continue
 			}

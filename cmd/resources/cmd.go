@@ -18,6 +18,7 @@ var (
 	declare  = flag.Bool("declare", false, "Whether to declare the \"var\" or not.")
 	out      = flag.String("output", "", "The filename to write the output to.")
 	trimPath = flag.String("trim", "", "Path prefix to remove from the resulting file path")
+	width    = flag.Int("width", 12, "Number of bytes per line in generetated file")
 )
 
 type nope struct{}
@@ -37,6 +38,7 @@ func main() {
 		Tag:     *tag,
 		Declare: *declare,
 	}
+	resources.BlockWidth = *width
 
 	res := resources.New()
 	res.Config = config
