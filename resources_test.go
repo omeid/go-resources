@@ -3,7 +3,7 @@ package resources
 import "testing"
 
 //go:generate go build -o testdata/resources github.com/omeid/go-resources/cmd/resources
-//go:generate testdata/resources -package test -var FS  -output testdata/generated/store_prod.go  testdata/generated/*.txt testdata/generated/*.sql
+//go:generate testdata/resources -package test -var FS  -output testdata/generated/store_prod.go  testdata/*.txt testdata/*.sql
 
 func TestPackage(t *testing.T) {
 

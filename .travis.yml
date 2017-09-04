@@ -1,9 +1,10 @@
 ---
 language: go
 
-go: 
+go:
   - 1.8.x
   - master
 
 script:
+  - go generate
   - go test -v ./...
