@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 	"text/template"
 )
 
@@ -42,7 +43,7 @@ type Package struct {
 	Files map[string]File
 }
 
-//Add a file to the package at the give path.
+// Add a file to the package at the give path.
 func (p *Package) Add(path string, file File) error {
 	p.Files[path] = file
 	return nil
@@ -81,13 +82,13 @@ func (p *Package) Write(path string) error {
 // Template
 var pkg *template.Template
 
-func reader(input io.Reader) (string, error) {
 
+func reader(input io.Reader, indent int) (string, error) {
 	var (
-		buff       bytes.Buffer
-		err        error
-		blockwidth = 12
-		curblock   = 0
+		buff      bytes.Buffer
+		err       error
+		curblock  = 0
+		linebreak = "\n" + strings.Repeat("\t", indent)
 	)
 
 	b := make([]byte, blockwidth)
@@ -100,10 +101,10 @@ func reader(input io.Reader) (string, error) {
 			}
 			curblock++
 			if curblock < blockwidth {
+				buff.WriteRune(' ')
 				continue
 			}
-			buff.WriteByte('\n')
-			buff.Write([]byte{'\t', '\t'})
+			buff.WriteString(linebreak)
 			curblock = 0
 		}
 	}
@@ -112,18 +113,17 @@ func reader(input io.Reader) (string, error) {
 }
 
 func init() {
-
-	pkg = template.Must(template.New("file").Funcs(template.FuncMap{"reader": reader}).Parse(` File{
-	  data: []byte{
-	{{ reader . }}
-  },
-  fi: FileInfo {
-	name:    "{{ .Stat.Name }}",
-    size:    {{ .Stat.Size }},
-	modTime: time.Unix(0, {{ .Stat.ModTime.UnixNano }}),
-    isDir:   {{ .Stat.IsDir }},
-  },
-}`))
+	pkg = template.Must(template.New("file").Funcs(template.FuncMap{"reader": reader}).Parse(`File{
+				data: []byte{
+					{{ reader . 5 }}
+				},
+				fi: FileInfo{
+					name:    "{{ .Stat.Name }}",
+					size:    {{ .Stat.Size }},
+					modTime: time.Unix(0, {{ .Stat.ModTime.UnixNano }}),
+					isDir:   {{ .Stat.IsDir }},
+				},
+			}`))
 
 	pkg = template.Must(pkg.New("pkg").Parse(`{{ if .Tag }}// +build {{ .Tag }}
 
@@ -261,13 +261,12 @@ func (f *FileInfo) Sys() interface{} {
 	return f.sys
 }
 
-
 func init() {
-  {{ .Var }} = &FileSystem{
+	{{ .Var }} = &FileSystem{
 		files: map[string]File{
-		  {{range $path, $file := .Files }} "/{{ $path }}": {{ template "file" $file }}, {{ end }}
+			{{range $path, $file := .Files }}"/{{ $path }}": {{ template "file" $file }},{{ end }}
 		},
-	  }
+	}
 }
 `))
 }
