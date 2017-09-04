@@ -19,12 +19,12 @@ var (
 	out      = flag.String("output", "", "The filename to write the output to.")
 	trimPath = flag.String("trim", "", "Path prefix to remove from the resulting file path")
 	width    = flag.Int("width", 12, "Number of bytes per line in generetated file")
+	gofmt    = flag.Bool("fmt", false, "Run output through gofmt. This is slow for huge files.")
 )
 
 type nope struct{}
 
 func main() {
-
 	flag.Parse()
 
 	if *out == "" {
@@ -37,6 +37,7 @@ func main() {
 		Var:     *varName,
 		Tag:     *tag,
 		Declare: *declare,
+		Format:  *gofmt,
 	}
 	resources.BlockWidth = *width
 

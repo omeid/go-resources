@@ -4,6 +4,7 @@ package resources
 import (
 	"bytes"
 	"fmt"
+	"go/format"
 	"io"
 	"log"
 	"os"
@@ -35,6 +36,7 @@ type Config struct {
 	Var     string // Variable name to assign the file system to.
 	Tag     string // Build tag, leave empty for no tag.
 	Declare bool   // Dictates whatever there should be a defintion Variable
+	Format  bool   // Whether gofmt should be applied to output.
 }
 
 // Package describes...
@@ -76,7 +78,21 @@ func (p *Package) Write(path string) error {
 		}
 	}()
 
-	return p.Build(f)
+	if !p.Format {
+		return p.Build(f)
+	}
+
+	buf := &bytes.Buffer{}
+	if e := p.Build(buf); e != nil {
+		return e
+	}
+
+	fmted, e := format.Source(buf.Bytes())
+	if e != nil {
+		return e
+	}
+	_, e = f.Write(fmted)
+	return e
 }
 
 var (
