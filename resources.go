@@ -120,7 +120,7 @@ func init() {
   fi: FileInfo {
 	name:    "{{ .Stat.Name }}", 
     size:    {{ .Stat.Size }},
-	modTime: time.Unix({{ .Stat.ModTime.Unix }},{{ .Stat.ModTime.UnixNano }}),
+	modTime: time.Unix(0, {{ .Stat.ModTime.UnixNano }}),
     isDir:   {{ .Stat.IsDir }},
   },
 }`))
