@@ -19,15 +19,26 @@ $ go get github.com/omeid/go-resources/cmd/resources
 
 
 ### Usage
-```sh
-$ resources -help
-Usage of resources:
-  -declare=false: Whether to declare the "var" or not.
-  -output="": The filename to write the output to.
-  -package="main": The name of package to generate.
-  -tag="": The tag to use for the generated package. Defaults to not tag.
-  -trim="": Path prefix to remove from the resulting file path
-  -var="FS": The name of variable to assign the virtual-filesystem to.
+
+```
+$ resources -h
+Usage resources:
+  -declare
+        whether to declare the -var (default false)
+  -fmt
+        run output through gofmt, this is slow for huge files (default false)
+  -output filename
+        filename to write the output to
+  -package name
+        name of the package to generate (default "main")
+  -tag tag
+        tag to use for the generated package (default no tag)
+  -trim prefix
+        path prefix to remove from the resulting file path in the virtual filesystem
+  -var name
+        name of the variable to assign the virtual filesystem to (default "FS")
+  -width number
+        number of content bytes per line in generetated file (default 12)
 ```
 
 ### Optimization
