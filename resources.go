@@ -30,16 +30,17 @@ func New() *Package {
 	}
 }
 
-// Config defines some details about the output Go file.
+// Config defines some details about the output file
 type Config struct {
-	Pkg     string // Package name
-	Var     string // Variable name to assign the file system to.
-	Tag     string // Build tag, leave empty for no tag.
-	Declare bool   // Dictates whatever there should be a defintion Variable
-	Format  bool   // Whether gofmt should be applied to output.
+	Pkg     string // Pkg holds the package name
+	Var     string // Var holds the variable name for the virtual filesystem
+	Tag     string // Tag may hold an optional build tag, unless empty
+	Declare bool   // Declare controls if the Var should be declared as well
+	Format  bool   // Format controls, whether gofmt should be applied to the output
 }
 
-// Package describes...
+// A Package describes a collection of files and how they should be tranformed
+// to an output.
 type Package struct {
 	Config
 	Files map[string]File
@@ -51,7 +52,8 @@ func (p *Package) Add(path string, file File) error {
 	return nil
 }
 
-// AddFile is a helper function that adds the files from the path into the package under the path file.
+// AddFile is a helper function that adds the files from the path into the
+// package under the path file.
 func (p *Package) AddFile(path string, file string) error {
 	f, err := os.Open(file)
 	if err != nil {
@@ -60,12 +62,13 @@ func (p *Package) AddFile(path string, file string) error {
 	return p.Add(path, f)
 }
 
-// Build the package
+// Build compiles the package and writes it into an io.Writer.
 func (p *Package) Build(out io.Writer) error {
 	return pkg.Execute(out, p)
 }
 
-// Write the build to a file, you don't need to call Build.
+// Write builds the package (via Build) and writes the output the the file
+// given by the path argument.
 func (p *Package) Write(path string) error {
 	f, err := os.Create(path)
 	if err != nil {
