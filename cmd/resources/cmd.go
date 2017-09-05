@@ -12,34 +12,42 @@ import (
 )
 
 var (
-	pkg      = flag.String("package", "main", "`name` of the package to generate")
-	varName  = flag.String("var", "FS", "`name` of the variable to assign the virtual filesystem to")
-	tag      = flag.String("tag", "", "`tag` to use for the generated package (default no tag)")
-	declare  = flag.Bool("declare", false, "whether to declare the -var (default false)")
-	out      = flag.String("output", "", "`filename` to write the output to")
-	trimPath = flag.String("trim", "", "path `prefix` to remove from the resulting file path in the virtual filesystem")
-	width    = flag.Int("width", 12, "`number` of content bytes per line in generetated file")
-	gofmt    = flag.Bool("fmt", false, "run output through gofmt, this is slow for huge files (default false)")
+	pkg      = "main"
+	varName  = "FS"
+	tag      = ""
+	declare  = false
+	out      = ""
+	trimPath = ""
+	width    = resources.BlockWidth
+	gofmt    = false
 )
 
 type nope struct{}
 
 func main() {
+	flag.StringVar(&pkg, "package", pkg, "`name` of the package to generate")
+	flag.StringVar(&varName, "var", varName, "`name` of the variable to assign the virtual filesystem to")
+	flag.StringVar(&tag, "tag", tag, "`tag` to use for the generated package (default no tag)")
+	flag.BoolVar(&declare, "declare", declare, "whether to declare the -var (default false)")
+	flag.StringVar(&out, "output", out, "`filename` to write the output to")
+	flag.StringVar(&trimPath, "trim", trimPath, "path `prefix` to remove from the resulting file path in the virtual filesystem")
+	flag.IntVar(&width, "width", width, "`number` of content bytes per line in generetated file")
+	flag.BoolVar(&gofmt, "fmt", gofmt, "run output through gofmt, this is slow for huge files (default false)")
 	flag.Parse()
 
-	if *out == "" {
+	if out == "" {
 		flag.PrintDefaults()
 		log.Fatal("-output is required.")
 	}
 
 	config := resources.Config{
-		Pkg:     *pkg,
-		Var:     *varName,
-		Tag:     *tag,
-		Declare: *declare,
-		Format:  *gofmt,
+		Pkg:     pkg,
+		Var:     varName,
+		Tag:     tag,
+		Declare: declare,
+		Format:  gofmt,
 	}
-	resources.BlockWidth = *width
+	resources.BlockWidth = width
 
 	res := resources.New()
 	res.Config = config
@@ -57,7 +65,7 @@ func main() {
 	}
 
 	for file := range files {
-		path := strings.TrimPrefix(file, *trimPath)
+		path := strings.TrimPrefix(file, trimPath)
 		err := res.AddFile(path, file)
 		if err != nil {
 			log.Fatal(err)
@@ -71,5 +79,4 @@ func main() {
 	}
 
 	log.Printf("Done. Wrote to %s", *out)
-
 }
