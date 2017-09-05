@@ -7,6 +7,7 @@ import (
 	"log"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/omeid/go-resources"
 )
@@ -64,6 +65,8 @@ func main() {
 		}
 	}
 
+	t0 := time.Now()
+
 	for file := range files {
 		path := strings.TrimPrefix(file, trimPath)
 		err := res.AddFile(path, file)
@@ -72,11 +75,9 @@ func main() {
 		}
 	}
 
-	err := res.Write(*out)
-
-	if err != nil {
+	if err := res.Write(out); err != nil {
 		log.Fatal(err)
 	}
 
-	log.Printf("Done. Wrote to %s", *out)
+	log.Printf("Finished in %v. Wrote %d resources to %s", time.Since(t0), len(files), out)
 }
