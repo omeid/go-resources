@@ -9,7 +9,7 @@ import (
 )
 
 //go:generate go build -o testdata/resources github.com/omeid/go-resources/cmd/resources
-//go:generate testdata/resources -package generated -output testdata/generated/store_prod.go  testdata/*.txt testdata/*.sql
+//go:generate testdata/resources -declare -package generated -output testdata/generated/store_prod.go  testdata/*.txt testdata/*.sql
 
 func TestGenerated(t *testing.T) {
 	for _, tt := range []struct {

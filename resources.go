@@ -282,6 +282,8 @@ func (f *FileInfo) Sys() interface{} {
 	return f.sys
 }
 
+{{ if .Declare }}var {{ .Var }} *FileSystem{{ end }}
+
 func init() {
 	{{ .Var }} = &FileSystem{
 		files: map[string]File{
