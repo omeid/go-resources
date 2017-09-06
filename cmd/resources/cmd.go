@@ -7,36 +7,48 @@ import (
 	"log"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/omeid/go-resources"
 )
 
 var (
-	pkg      = flag.String("package", "main", "The name of package to generate.")
-	varName  = flag.String("var", "FS", "The name of variable to assign the virtual-filesystem to.")
-	tag      = flag.String("tag", "", "The tag to use for the generated package. Defaults to not tag.")
-	declare  = flag.Bool("declare", false, "Whether to declare the \"var\" or not.")
-	out      = flag.String("output", "", "The filename to write the output to.")
-	trimPath = flag.String("trim", "", "Path prefix to remove from the resulting file path")
+	pkg      = "main"
+	varName  = "FS"
+	tag      = ""
+	declare  = false
+	out      = ""
+	trimPath = ""
+	width    = resources.BlockWidth
+	gofmt    = false
 )
 
 type nope struct{}
 
 func main() {
-
+	flag.StringVar(&pkg, "package", pkg, "`name` of the package to generate")
+	flag.StringVar(&varName, "var", varName, "`name` of the variable to assign the virtual filesystem to")
+	flag.StringVar(&tag, "tag", tag, "`tag` to use for the generated package (default no tag)")
+	flag.BoolVar(&declare, "declare", declare, "whether to declare the -var (default false)")
+	flag.StringVar(&out, "output", out, "`filename` to write the output to")
+	flag.StringVar(&trimPath, "trim", trimPath, "path `prefix` to remove from the resulting file path in the virtual filesystem")
+	flag.IntVar(&width, "width", width, "`number` of content bytes per line in generetated file")
+	flag.BoolVar(&gofmt, "fmt", gofmt, "run output through gofmt, this is slow for huge files (default false)")
 	flag.Parse()
 
-	if *out == "" {
+	if out == "" {
 		flag.PrintDefaults()
 		log.Fatal("-output is required.")
 	}
 
 	config := resources.Config{
-		Pkg:     *pkg,
-		Var:     *varName,
-		Tag:     *tag,
-		Declare: *declare,
+		Pkg:     pkg,
+		Var:     varName,
+		Tag:     tag,
+		Declare: declare,
+		Format:  gofmt,
 	}
+	resources.BlockWidth = width
 
 	res := resources.New()
 	res.Config = config
@@ -53,20 +65,19 @@ func main() {
 		}
 	}
 
+	t0 := time.Now()
+
 	for file := range files {
-		path := strings.TrimPrefix(file, *trimPath)
+		path := strings.TrimPrefix(file, trimPath)
 		err := res.AddFile(path, file)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
 
-	err := res.Write(*out)
-
-	if err != nil {
+	if err := res.Write(out); err != nil {
 		log.Fatal(err)
 	}
 
-	log.Printf("Done. Wrote to %s", *out)
-
+	log.Printf("Finished in %v. Wrote %d resources to %s", time.Since(t0), len(files), out)
 }
