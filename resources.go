@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 	"text/template"
 )
@@ -48,6 +49,7 @@ type Package struct {
 
 // Add a file to the package at the give path.
 func (p *Package) Add(path string, file File) error {
+	path = filepath.ToSlash(path)
 	p.Files[path] = file
 	return nil
 }
