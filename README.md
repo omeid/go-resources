@@ -212,7 +212,3 @@ See [Contributors](https://github.com/omeid/go-resources/graphs/contributors).
 ### LICENSE
 
 [MIT](LICENSE).
-
-### TODO
-
-- Add tests.
