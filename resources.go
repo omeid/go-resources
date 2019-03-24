@@ -235,7 +235,7 @@ func (f *File) Close() error {
 }
 
 // Readdir implements http.File.Readdir
-func (f *File) Readdir(count int) ([]os.FileInfo, error) {
+func (f *File) Readdir(_ int) ([]os.FileInfo, error) {
 	return nil, os.ErrNotExist
 }
 
@@ -282,7 +282,7 @@ func (f *FileInfo) IsDir() bool {
 }
 
 // Readdir implements os.FileInfo.Readdir
-func (f *FileInfo) Readdir(count int) ([]os.FileInfo, error) {
+func (f *FileInfo) Readdir(_ int) ([]os.FileInfo, error) {
 	return f.files, nil
 }
 
