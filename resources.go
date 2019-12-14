@@ -54,14 +54,32 @@ func (p *Package) Add(path string, file File) error {
 	return nil
 }
 
-// AddFile is a helper function that adds the files from the path into the
-// package under the path file.
+// AddFile is a helper function that adds a file into the package.
 func (p *Package) AddFile(path string, file string) error {
 	f, err := os.Open(file)
 	if err != nil {
 		return err
 	}
 	return p.Add(path, f)
+}
+
+// AddFiles is a helper function that recursively adds files to the package.
+func (p *Package) AddFiles(trimPath string, path string) (int, error) {
+	var n int
+	err := filepath.Walk(path, func(filePath string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		f, err := os.Open(filePath)
+		if err != nil {
+			return err
+		}
+
+		n++
+		return p.Add(strings.TrimPrefix(filePath, trimPath), f)
+	})
+	return n, err
 }
 
 // Build compiles the package and writes it into an io.Writer.

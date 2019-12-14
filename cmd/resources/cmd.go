@@ -6,7 +6,6 @@ import (
 	"flag"
 	"log"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/omeid/go-resources"
@@ -67,17 +66,19 @@ func main() {
 
 	t0 := time.Now()
 
+	var wrote int
 	for file := range files {
-		path := strings.TrimPrefix(file, trimPath)
-		err := res.AddFile(path, file)
+		n, err := res.AddFiles(trimPath, file)
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		wrote += n
 	}
 
 	if err := res.Write(out); err != nil {
 		log.Fatal(err)
 	}
 
-	log.Printf("Finished in %v. Wrote %d resources to %s", time.Since(t0), len(files), out)
+	log.Printf("Finished in %v. Wrote %d resources to %s", time.Since(t0), wrote, out)
 }
