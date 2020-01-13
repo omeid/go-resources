@@ -9,7 +9,7 @@ import (
 )
 
 //go:generate go build -o testdata/resources github.com/omeid/go-resources/cmd/resources
-//go:generate testdata/resources -declare -package generated -output testdata/generated/store_prod.go  testdata/*.txt testdata/*.sql
+//go:generate testdata/resources -package generated -declare -output testdata/generated/store_prod.go testdata/*.txt testdata/*.sql testdata/sub-a
 
 func TestGenerated(t *testing.T) {
 	for _, tt := range []struct {
@@ -19,6 +19,8 @@ func TestGenerated(t *testing.T) {
 		{name: "test.txt", snippet: "this is test.txt"},
 		{name: "patrick.txt", snippet: "no, this is patrick!"},
 		{name: "query.sql", snippet: `drop table "files";`},
+		{name: "sub-a/test2.txt", snippet: "this is test2.txt"},
+		{name: "sub-a/sub-b/patrick2.txt", snippet: "no, this is patrick2!"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			f, err := generated.FS.Open("/testdata/" + tt.name)
