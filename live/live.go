@@ -18,7 +18,6 @@ type Resources interface {
 // Dir returns an Resources implementation that servers the files from the
 // provided dir location, it will expand the path relative to the caller.
 func Dir(dir string) Resources {
-
 	_, filename, _, ok := runtime.Caller(1)
 
 	if !ok {
@@ -34,7 +33,6 @@ type resources struct {
 }
 
 func (r *resources) String(name string) (string, bool) {
-
 	file, err := r.Open(name)
 	if err != nil {
 		return "", false

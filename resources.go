@@ -314,7 +314,7 @@ func (f *FileInfo) Sys() interface{} {
 func init() {
 	{{ .Var }} = &FileSystem{
 		files: map[string]File{
-			{{range $path, $file := .Files }}"/{{ $path }}": {{ template "file" $file }},{{ end }}
+			{{range $path, $file := .Files }}"{{ $path }}": {{ template "file" $file }},{{ end }}
 		},
 	}
 }
