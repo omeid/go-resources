@@ -19,10 +19,9 @@ type Resources interface {
 // provided dir location, it will expand the path relative to the caller.
 func Dir(dir string) Resources {
 
-	_, filename, _, ok := runtime.Caller(1)
-
-	if !ok {
-		panic("failed to get Caller details")
+	filename, err := os.Executable()
+	if err != nil {
+		panic(err)
 	}
 
 	dir = filepath.Join(filepath.Dir(filename), dir)
