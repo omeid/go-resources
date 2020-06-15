@@ -16,7 +16,7 @@ type Resources interface {
 }
 
 // Dir returns an Resources implementation that servers the files from the
-// provided dir location, it will expand the path relative to the caller.
+// provided dir location, it will expand the path relative to the executable.
 func Dir(dir string) Resources {
 
 	filename, err := os.Executable()
