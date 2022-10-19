@@ -1,3 +1,9 @@
+> Heads up!  
+> This library is in maintenance mode. Please use the official embed library going forward.  
+> https://pkg.go.dev/embed
+
+
+
 # Resources [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](https://godoc.org/github.com/omeid/go-resources)  [![Build Status](https://travis-ci.org/omeid/go-resources.svg?branch=master)](https://travis-ci.org/omeid/go-resources) [![Go Report Card](https://goreportcard.com/badge/github.com/omeid/go-resources?bust=true)](https://goreportcard.com/report/github.com/omeid/go-resources)
 Unfancy resources embedding with Go.
 
